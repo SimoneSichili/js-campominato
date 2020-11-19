@@ -73,8 +73,22 @@ while (userList.length < 84 && checkBomb == false) {
     // var userNumber = generateNumber(1, 100); 
 
     //prompt dei numeri da scrivere
-    var userNumber = parseInt(prompt("Inserisci un numero")); 
-    
+    // var userNumber = parseInt(prompt("Inserisci un numero")); 
+   
+    do {
+
+        var userNumber = parseInt(prompt("Inserisci un numero")); 
+        
+        if (userNumber <= 0) {
+            alert("Non puoi inserire un numero minore di 1");
+        } else if (userNumber >= 101) {
+            alert("Non puoi inserire un numero maggiore di 100");
+        } else if (isNaN(userNumber)) {
+            alert("Non puoi inserire una parola");
+        }
+
+    } while (userNumber <= 0 || userNumber >= 101 || isNaN(userNumber));
+
     var comparedUserNumber = isIncluded(userNumber, userList);
 
     if (comparedUserNumber == false) {
