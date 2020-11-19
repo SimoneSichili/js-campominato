@@ -12,11 +12,43 @@ con difficoltà 1 =>  tra 1 e 80
 con difficoltà 2 => tra 1 e 50 */
 
 // #1 Generare 16 numeri casuali tra 1 e 100. I numeri non possono essere dei duplicati.
+// var difficulty = parseInt(prompt("Scegli la difficoltà: 0-facile, 1-medio, 2-difficile"));
+
+while (difficulty < 0 || difficulty > 2 || isNaN(difficulty)) {
+
+    var difficulty = parseInt(prompt("Scegli la difficoltà: 0-facile, 1-medio, 2-difficile"));
+    
+    if (difficulty < 0) {
+        alert("Non puoi inserire un numero minore di 0");
+    } else if (difficulty > 2) {
+        alert("Non puoi inserire un numero maggiore di 2");
+    } else if (isNaN(difficulty)) {
+        alert("Non puoi inserire una parola");
+    }
+}
+
+
+
 var bombList = [];
+var randomBomb = "";
 
 while (bombList.length < 16) {
 
-    var randomBomb = generateNumber(1, 100);
+    switch (difficulty) {
+        case 0:
+            randomBomb = generateNumber(1, 100);
+            break;
+        case 1:
+            randomBomb = generateNumber(1, 80);
+            break;
+        case 2:
+            randomBomb = generateNumber(1, 50);
+            break;
+        default:
+            randomBomb = generateNumber(1, 100);
+            break;
+    }
+
     // console.log("Numero bomba casuale:", randomBomb);
     var comparedNumber = isIncluded(randomBomb, bombList);
     
@@ -26,34 +58,37 @@ while (bombList.length < 16) {
 
 }
 
-console.log("Array delle bombe:", bombList);
+mySort(bombList);
+console.log("Lista delle bombe:", bombList);
+document.getElementById("bomb-list").innerHTML = bombList;
 
 
 // #2 Chiedere all’utente (100 - 16) (84) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
-var userList = [].sort();
+var userList = [];
 checkBomb = false;
 
 while (userList.length < 84 && checkBomb == false) {
 
     //numeri generati automaticamente
-    // var randomUserNumber = generateNumber(1, 100); 
+    // var userNumber = generateNumber(1, 100); 
 
     //prompt dei numeri da scrivere
-    var randomUserNumber = parseInt(prompt("Inserisci un numero")); 
-    // console.log("Numero utente casuale:", randomUserNumber);
-
-    var comparedUserNumber = isIncluded(randomUserNumber, userList);
+    var userNumber = parseInt(prompt("Inserisci un numero")); 
+    
+    var comparedUserNumber = isIncluded(userNumber, userList);
 
     if (comparedUserNumber == false) {
-        userList.push(randomUserNumber);
+        userList.push(userNumber);
     } else if (comparedUserNumber == true) {
         alert("Hai inserito un numero già esistente");
     }
     
     for (var k = 0; k < bombList.length; k++) {
         
-        if (randomUserNumber == bombList[k]) {
-            alert("Numero presente. Hai perso!");
+        if (userNumber == bombList[k]) {
+            alert("Numero " + userNumber + " presente. Hai perso!");
+            console.log("Numero " + userNumber + " presente. Hai perso!"); 
+            document.getElementById("result").innerHTML = "Numero " + userNumber + " presente. Hai perso!";
             checkBomb = true;
         }
         
@@ -61,12 +96,20 @@ while (userList.length < 84 && checkBomb == false) {
     
 }
 
+mySort(userList);
 console.log("Array numeri dell'utente:", userList); 
+document.getElementById("user-list").innerHTML = userList;
+
+console.log("Il tuo punteggio è:", userList.length);
+document.getElementById("score").innerHTML = userList.length;
+
 
 var commonElements = commonElements(userList, bombList);
 
 if (commonElements == false) {
     alert("Hai vinto!")
+    console.log("Hai vinto!"); 
+    document.getElementById("result").innerHTML = "Hai vinto!";
 };
 
 
@@ -104,3 +147,7 @@ function commonElements(array1, array2) {
     } 
     return false;  
 } 
+
+function mySort(array) {
+    array.sort(function(a, b){return a - b});
+  }
