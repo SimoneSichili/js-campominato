@@ -11,12 +11,11 @@ con difficoltà 0 => tra 1 e 100
 con difficoltà 1 =>  tra 1 e 80
 con difficoltà 2 => tra 1 e 50 */
 
-// #1 Generare 16 numeri casuali tra 1 e 100. I numeri non possono essere dei duplicati.
-// var difficulty = parseInt(prompt("Scegli la difficoltà: 0-facile, 1-medio, 2-difficile"));
+// #1 Chiedere la difficoltà all'utente.
 
 while (difficulty < 0 || difficulty > 2 || isNaN(difficulty)) {
 
-    var difficulty = parseInt(prompt("Scegli la difficoltà: 0-facile, 1-medio, 2-difficile"));
+    var difficulty = parseInt(prompt("Scegli la difficoltà:\n-0- facile,\n-1- medio,\n-2- difficile"));
     
     if (difficulty < 0) {
         alert("Non puoi inserire un numero minore di 0");
@@ -28,24 +27,30 @@ while (difficulty < 0 || difficulty > 2 || isNaN(difficulty)) {
 }
 
 
+// #2 Generare 16 numeri casuali tra 1 e 100. I numeri non possono essere dei duplicati.
 
 var bombList = [];
 var randomBomb = "";
+var maxNumber;
 
 while (bombList.length < 16) {
 
     switch (difficulty) {
         case 0:
             randomBomb = generateNumber(1, 100);
+            maxNumber = 100;
             break;
         case 1:
             randomBomb = generateNumber(1, 80);
+            maxNumber = 80;
             break;
         case 2:
             randomBomb = generateNumber(1, 50);
+            maxNumber = 50;
             break;
         default:
             randomBomb = generateNumber(1, 100);
+            maxNumber = 100;
             break;
     }
 
@@ -63,11 +68,11 @@ console.log("Lista delle bombe:", bombList);
 document.getElementById("bomb-list").innerHTML = bombList;
 
 
-// #2 Chiedere all’utente (100 - 16) (84) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
+// #3 Chiedere all’utente (100 - 16) (84) volte di inserire un numero alla volta, sempre compreso tra 1 e 100.
 var userList = [];
 checkBomb = false;
 
-while (userList.length < 84 && checkBomb == false) {
+while (userList.length < maxNumber && checkBomb == false) {
 
     //numeri generati automaticamente
     // var userNumber = generateNumber(1, 100); 
@@ -77,12 +82,12 @@ while (userList.length < 84 && checkBomb == false) {
    
     do {
 
-        var userNumber = parseInt(prompt("Inserisci un numero")); 
+        var userNumber = parseInt(prompt("Inserisci un numero tra 1 e " + maxNumber)); 
         
         if (userNumber <= 0) {
             alert("Non puoi inserire un numero minore di 1");
-        } else if (userNumber >= 101) {
-            alert("Non puoi inserire un numero maggiore di 100");
+        } else if (userNumber > maxNumber) {
+            alert("Non puoi inserire un numero maggiore di " + maxNumber);
         } else if (isNaN(userNumber)) {
             alert("Non puoi inserire una parola");
         }
@@ -114,8 +119,8 @@ mySort(userList);
 console.log("Array numeri dell'utente:", userList); 
 document.getElementById("user-list").innerHTML = userList;
 
-console.log("Il tuo punteggio è:", userList.length);
-document.getElementById("score").innerHTML = userList.length;
+console.log("Il tuo punteggio è:", userList.length - 1);
+document.getElementById("score").innerHTML = userList.length - 1;
 
 
 var commonElements = commonElements(userList, bombList);
